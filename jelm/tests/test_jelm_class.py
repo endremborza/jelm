@@ -46,3 +46,7 @@ def test_add_object():
 
     with pytest.raises(ValueError):
         jelm.add_object({'type': 'wrong'})
+
+    jelm.add_edge('n3', 'n2')
+
+    jelm.add_node('n4', {'order': 'latest'})

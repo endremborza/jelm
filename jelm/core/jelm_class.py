@@ -91,3 +91,23 @@ class Jelm:
             parsed_obj = obj.get_dict()
 
         self.objects.append(parsed_obj)
+
+    def add_edge(self,
+                 source: str,
+                 target: str,
+                 id: Optional[str] = None,
+                 attributes: Optional[dict] = None):
+
+        parsed_obj = Edge(source,
+                          target,
+                          id,
+                          attributes).get_dict()
+        self.objects.append(parsed_obj)
+
+    def add_node(self,
+                 id: str,
+                 attributes: Optional[dict] = None):
+
+        parsed_obj = Node(id, attributes).get_dict()
+
+        self.objects.append(parsed_obj)
