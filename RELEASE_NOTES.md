@@ -1,3 +1,1 @@
-- added a few things to init
-- a new reader and renamed the old one
-- added iterator
+node to_dict error fix
