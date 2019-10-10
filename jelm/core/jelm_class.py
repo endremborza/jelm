@@ -43,7 +43,7 @@ class Node:
         else:
             optionals = {}
         return {
-            'type': 'edge',
+            'type': 'node',
             'id': self.id,
             **optionals
         }

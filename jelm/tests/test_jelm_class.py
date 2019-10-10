@@ -28,11 +28,11 @@ def test_add_object():
     el = Jelm()
 
     el.add_object({'type': 'edge',
-                     'source': 'n1',
-                     'target': 'n2'})
+                   'source': 'n1',
+                   'target': 'n2'})
 
     el.add_object({'type': 'node',
-                     'id': 'n1'})
+                   'id': 'n1'})
 
     el.add_object(Node(id='n2'))
 
@@ -48,6 +48,10 @@ def test_add_object():
     el.add_edge('n3', 'n2')
 
     el.add_node('n4', {'order': 'latest'})
+
+    assert len(set([o['type'] for o in el.objects])) > 1
+    assert el.objects[0]['type'] == 'edge'
+    assert el.objects[1]['type'] == 'node'
 
 
 def test_iter():
