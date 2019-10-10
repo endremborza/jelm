@@ -1,52 +1,69 @@
 import pytest
 
-from jelm import Jelm
+from jelm import Jelm, Node, Edge
 
 
 def test_init():
 
-    jelm = Jelm(metadata={'author': 'John Doe'},
-                objects=[])
+    el = Jelm(metadata={'author': 'John Doe'},
+              objects=[])
 
     with pytest.raises(ValueError):
-        jelm2 = Jelm(bad_kwarg="fing")
+        el2 = Jelm(bad_kwarg="fing")
 
-    assert isinstance(jelm.objects, list)
-    assert isinstance(jelm.metadata, dict)
+    assert isinstance(el.objects, list)
+    assert isinstance(el.metadata, dict)
 
 
 def test_get():
 
-    jelm = Jelm()
+    el = Jelm()
 
-    assert isinstance(jelm.get_dict(), dict)
-    assert isinstance(jelm.get_json(), str)
+    assert isinstance(el.get_dict(), dict)
+    assert isinstance(el.get_json(), str)
 
 
 def test_add_object():
 
-    jelm = Jelm()
+    el = Jelm()
 
-    jelm.add_object({'type': 'edge',
+    el.add_object({'type': 'edge',
                      'source': 'n1',
                      'target': 'n2'})
 
-    jelm.add_object({'type': 'node',
+    el.add_object({'type': 'node',
                      'id': 'n1'})
 
-    from jelm.core.jelm_class import Node
+    el.add_object(Node(id='n2'))
 
-    jelm.add_object(Node(id='n2'))
-
-    jelm.add_object(Node(id='n3',
-                         attributes={'priority': 'low'}))
+    el.add_object(Node(id='n3',
+                       attributes={'priority': 'low'}))
 
     with pytest.raises(ValueError):
-        jelm.add_object({'no': 'type'})
+        el.add_object({'no': 'type'})
 
     with pytest.raises(ValueError):
-        jelm.add_object({'type': 'wrong'})
+        el.add_object({'type': 'wrong'})
 
-    jelm.add_edge('n3', 'n2')
+    el.add_edge('n3', 'n2')
 
-    jelm.add_node('n4', {'order': 'latest'})
+    el.add_node('n4', {'order': 'latest'})
+
+
+def test_iter():
+
+    el = Jelm(metadata={'author': 'John Doe'},
+              objects=[{'type': 'node',
+                        'id': 'n1'},
+                       {'type': 'node',
+                        'id': 'n2'},
+                       {'type': 'edge',
+                        'source': 'n1',
+                        'target': 'n2'}]
+              )
+
+    for idx, o in enumerate(el):
+        if idx < 2:
+            assert isinstance(o, Node)
+        else:
+            assert isinstance(o, Edge)

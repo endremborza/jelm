@@ -56,6 +56,7 @@ class Jelm:
                  objects: Optional[list]=None,
                  **kwargs):
 
+        #  TODO: add validation
         self.metadata = metadata or {}
         self.objects = objects or []
 
@@ -111,3 +112,14 @@ class Jelm:
         parsed_obj = Node(id, attributes).get_dict()
 
         self.objects.append(parsed_obj)
+
+    def __iter__(self):
+
+        for o in self.objects:
+
+            jelm_object_init_kwargs = o.copy()
+            obj_type = jelm_object_init_kwargs.pop('type')
+            if obj_type == 'edge':
+                yield Edge(**jelm_object_init_kwargs)
+            elif obj_type == 'node':
+                yield Node(**jelm_object_init_kwargs)
