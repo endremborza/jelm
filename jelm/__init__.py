@@ -1,3 +1,3 @@
 from .core.jelm_class import Jelm
-from .core.io import read_json_dump
+from .core.io import reads_json, read_json
 from ._version import __version__
