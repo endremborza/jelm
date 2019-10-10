@@ -1,1 +1,3 @@
-first release - MVP
+- added a few things to init
+- a new reader and renamed the old one
+- added iterator
