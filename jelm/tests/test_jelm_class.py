@@ -15,14 +15,6 @@ def test_init():
     assert isinstance(el.metadata, dict)
 
 
-def test_get():
-
-    el = Jelm()
-
-    assert isinstance(el.get_dict(), dict)
-    assert isinstance(el.get_json(), str)
-
-
 def test_add_object():
 
     el = Jelm()

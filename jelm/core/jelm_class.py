@@ -64,14 +64,26 @@ class Jelm:
             raise ValueError("Tried to create jelm object with additional kwargs {}"
                              .format(kwargs.keys()))
 
-    def get_dict(self) -> dict:
+    def dict(self) -> dict:
         return {
             'metadata': self.metadata,
             'objects': self.objects
         }
 
-    def get_json(self) -> str:
-        return json.dumps(self.get_dict())
+    def json_dumps(self) -> str:
+        return json.dumps(self.dict())
+
+    def json_dump(self, fp) -> None:
+        try:
+            json.dump(self.dict(),
+                      fp)
+        except AttributeError:
+            if isinstance(fp, str):
+                json.dump(self.dict(),
+                          open(fp, 'w'))
+            else:
+                raise TypeError("""either pass something with a .write() method, 
+                or a string pointing to a valid path to Jelm.json_dump""")
 
     def add_object(self, obj: Union[dict, Edge, Node]):
 
@@ -113,7 +125,7 @@ class Jelm:
 
         self.objects.append(parsed_obj)
 
-    def __iter__(self):
+    def __iter__(self) -> Union[Edge, Node]:
 
         for o in self.objects:
 
