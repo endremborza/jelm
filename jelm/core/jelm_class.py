@@ -56,9 +56,12 @@ class Jelm:
                  objects: Optional[list]=None,
                  **kwargs):
 
-        #  TODO: add validation
         self.metadata = metadata or {}
-        self.objects = objects or []
+        self.objects = []
+
+        self.nodes = {}
+        for o in objects or []:
+            self.add_object(o)
 
         if kwargs:
             raise ValueError("Tried to create jelm object with additional kwargs {}"
@@ -67,7 +70,7 @@ class Jelm:
     def dict(self) -> dict:
         return {
             'metadata': self.metadata,
-            'objects': self.objects
+            'objects': [o.get_dict() for o in self.objects]
         }
 
     def json_dumps(self) -> str:
@@ -88,20 +91,31 @@ class Jelm:
     def add_object(self, obj: Union[dict, Edge, Node]):
 
         if isinstance(obj, dict):
-
+            jelm_kwargs = obj.copy()
             try:
-                obj_type = obj.pop('type')
+                obj_type = jelm_kwargs.pop('type')
             except KeyError:
                 raise ValueError("if dict is given, 'type' key needs to be set! (to either node or edge)")
 
+            is_node = False
             if obj_type == 'edge':
-                parsed_obj = Edge(**obj).get_dict()
+                parsed_obj = Edge(**jelm_kwargs)
             elif obj_type == 'node':
-                parsed_obj = Node(**obj).get_dict()
+                parsed_obj = Node(**jelm_kwargs)
+                is_node = True
             else:
                 raise ValueError("object type needs to be either node or edge it is {}".format(obj_type))
         else:
-            parsed_obj = obj.get_dict()
+            parsed_obj = obj
+            is_node = isinstance(parsed_obj,
+                                 Node)
+
+        if is_node:
+
+            if parsed_obj.id not in self.nodes.keys():
+                self.nodes[parsed_obj.id] = parsed_obj
+            else:
+                raise ValueError("node with id {} already present".format(parsed_obj.id))
 
         self.objects.append(parsed_obj)
 
@@ -114,24 +128,20 @@ class Jelm:
         parsed_obj = Edge(source,
                           target,
                           id,
-                          attributes).get_dict()
-        self.objects.append(parsed_obj)
+                          attributes)
+
+        self.add_object(parsed_obj)
 
     def add_node(self,
                  id: str,
                  attributes: Optional[dict] = None):
 
-        parsed_obj = Node(id, attributes).get_dict()
+        parsed_obj = Node(id, attributes)
 
-        self.objects.append(parsed_obj)
+        self.add_object(parsed_obj)
 
     def __iter__(self) -> Union[Edge, Node]:
 
         for o in self.objects:
 
-            jelm_object_init_kwargs = o.copy()
-            obj_type = jelm_object_init_kwargs.pop('type')
-            if obj_type == 'edge':
-                yield Edge(**jelm_object_init_kwargs)
-            elif obj_type == 'node':
-                yield Node(**jelm_object_init_kwargs)
+            yield o

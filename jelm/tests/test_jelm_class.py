@@ -41,9 +41,9 @@ def test_add_object():
 
     el.add_node('n4', {'order': 'latest'})
 
-    assert len(set([o['type'] for o in el.objects])) > 1
-    assert el.objects[0]['type'] == 'edge'
-    assert el.objects[1]['type'] == 'node'
+    assert len(set([type(o) for o in el.objects])) > 1
+    assert isinstance(el.objects[0], Edge)
+    assert isinstance(el.objects[1], Node)
 
 
 def test_iter():
