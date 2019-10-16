@@ -1,1 +1,2 @@
-json io refactor
+- testing refactored to a number of test cases
+- dictionary structure implemented for neighbor lookups
