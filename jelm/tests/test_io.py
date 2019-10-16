@@ -5,6 +5,8 @@ import pytest
 from jelm.core.jelm_class import Jelm
 from jelm.core.io import reads_json, read_json
 
+from .network_cases import case_set
+
 
 def test_json_reads():
 
@@ -18,6 +20,17 @@ def test_json_reads():
     el = reads_json(dump)
 
     assert isinstance(el, Jelm)
+
+
+def test_json_reads_dumps_w_cases():
+
+    def io_fun(_el: Jelm):
+
+        _dump = _el.json_dumps()
+
+        return reads_json(_dump)
+
+    case_set.evaluate_all(non_altering_function=io_fun)
 
 
 def test_json_read(tmp_path):
@@ -77,3 +90,17 @@ def test_json_dump(tmp_path):
 
     with pytest.raises(TypeError):
         el.json_dump(10)
+
+
+def test_json_read_dump_w_cases(tmp_path):
+    d = tmp_path / "sub3"
+    d.mkdir()
+    p = d / "fing3.jelm"
+    fp = os.fspath(p)
+
+    def io_fun(_el: Jelm):
+        _el.json_dump(fp)
+
+        return read_json(fp)
+
+    case_set.evaluate_all(non_altering_function=io_fun)
