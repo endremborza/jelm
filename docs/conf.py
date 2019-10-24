@@ -60,3 +60,4 @@ extensions.append('sphinx_automodapi.smart_resolver')
 extensions.append('sphinx.ext.graphviz')
 import os, sys
 sys.path.insert(0, os.path.abspath(".."))
+master_doc = "index"
