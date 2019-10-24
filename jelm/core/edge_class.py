@@ -2,6 +2,12 @@ from typing import Optional
 
 
 class Edge:
+    """jelm edge class
+
+    - must have a source and a target
+    - might have an id
+    - can have arbitrary json serializable attributes
+    """
 
     def __init__(self,
                  source: str,
@@ -25,3 +31,13 @@ class Edge:
             'target': self.target,
             **optionals
         }
+
+    def __str__(self):
+
+        return "::jelm Edge connecting {} to {}{}::".format(self.source,
+                                                            self.target,
+                                                            " (id: {})".format(self.id) if self.id else "")
+
+    def __repr__(self):
+
+        return self.__str__()

@@ -7,6 +7,12 @@ if TYPE_CHECKING:
 
 
 class Node:
+    """node class for jelm graphs
+
+    - stores neighbors indexed locally
+    - must have an id
+    - can have arbitrary json serializable attributes
+    """
 
     def __init__(self,
                  id: str,
@@ -66,3 +72,14 @@ class Node:
 
     def get_outward_comparison_neighbors(self):
         return self._comparison_neighbors('out')
+
+    def __str__(self):
+
+        n = len(self.neighbors.keys())
+        return "::jelm Node ({}) with {} neighbor{}::".format(self.id,
+                                                              n,
+                                                              '' if n == 1 else 's')
+
+    def __repr__(self):
+
+        return self.__str__()

@@ -8,9 +8,11 @@ from typing import Optional, Union
 
 
 class Jelm:
-    """
-    should be immutable!!
-    as a lot of data is stored redundantly for speedups
+    """jelm graph class
+
+    - stores and serializes a jelm graph
+    - has accessors for simple graph operations
+    - a lot of data is stored redundantly for speedups
     """
 
     def __init__(self,
@@ -142,3 +144,17 @@ class Jelm:
             return self.get_comparison_dict() == other.get_comparison_dict()
 
         return False
+
+    def __str__(self):
+
+        nn = len(self.nodes.keys())
+        en = len(self.objects) - nn
+
+        return "::jelm Graph with {} node{} and {} edge{}::".format(nn,
+                                                                    '' if nn == 1 else 's',
+                                                                    en,
+                                                                    '' if en == 1 else 's')
+
+    def __repr__(self):
+
+        return self.__str__()
