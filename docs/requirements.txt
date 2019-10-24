@@ -1,3 +1,4 @@
 sphinx
 graphviz
 sphinx-automodapi
+jupyter
