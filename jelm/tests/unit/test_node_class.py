@@ -3,6 +3,13 @@ import pytest
 from jelm import Node, Edge
 
 
+def test_node_repr():
+
+    n = Node('n1')
+
+    assert 'n1' in n.__repr__()
+
+
 def test_add_edge():
 
     n = Node(id='n1')

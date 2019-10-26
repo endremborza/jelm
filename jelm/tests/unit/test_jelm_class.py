@@ -2,7 +2,7 @@ import pytest
 
 from jelm import Jelm, Node, Edge
 
-from .network_cases import case_set
+from jelm.tests.network_cases import case_set
 
 
 def test_eq():
@@ -13,6 +13,20 @@ def test_eq():
 
     assert not (10 == Jelm())
     assert not ('fing' == Jelm())
+
+
+def test_jelm_repr():
+
+    def repr_check(el: Jelm):
+
+        repr_string = el.__repr__()
+
+        assert 'jelm' in repr_string
+        assert str(len(el.nodes.keys())) in repr_string
+
+        return el
+
+    case_set.evaluate_all(non_altering_function=repr_check)
 
 
 def test_neighbors():

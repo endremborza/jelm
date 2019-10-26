@@ -3,7 +3,7 @@ from jelm import Jelm
 from typing import Callable, Optional, Type
 
 
-class NetwokCaseTemplate:
+class NetwokCaseTemplate:  # make this to a fixture
 
     el1 = Jelm()
     el2 = Jelm()
