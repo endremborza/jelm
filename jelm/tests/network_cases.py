@@ -14,6 +14,26 @@ class EmptyNetworks(NetwokCaseTemplate):
 
 
 @case_set.register
+class EmptyNetworksWithMeta(NetwokCaseTemplate):
+    def __init__(self):
+
+        self.el1 = Jelm(metadata={"author": "John Doe"})
+        self.el2 = Jelm(metadata={"author": "John Doe"})
+
+        self.same = True
+
+
+@case_set.register
+class EmptyNetworksWithDiffMEta(NetwokCaseTemplate):
+    def __init__(self):
+
+        self.el1 = Jelm(metadata={"author": "John Doe"})
+        self.el2 = Jelm(metadata={"author": "Jane Doe"})
+
+        self.same = False
+
+
+@case_set.register
 class OneNodeSame(NetwokCaseTemplate):
     def __init__(self):
 
@@ -30,7 +50,7 @@ class OneNodeDiffAtt(NetwokCaseTemplate):
         self.el1 = Jelm(
             objects=[{"type": "node", "id": "n1", "attributes": {"fing": True}}]
         )
-        self.el2 = Jelm(objects=[{"type": "node", "id": "n1"},])
+        self.el2 = Jelm(objects=[{"type": "node", "id": "n1"}])
 
         self.same = False
 
@@ -177,6 +197,35 @@ class BigNetRef(NetwokCaseTemplate):
                 "target": "n{}".format(ns[1]),
             }
             for ns in [(0, 1), (1, 2), (4, 1), (10, 8), (9, 3), (18, 6)]
+        ]
+
+        self.el1 = Jelm(objects=[*node_list1, *edge_list1])
+
+        self.el2 = self.el1
+
+        self.same = True
+
+
+@case_set.register
+class BiggerNetRef(NetwokCaseTemplate):
+    def __init__(self):
+        import random
+
+        random.seed(42)
+        node_count = 2000
+        edge_count = 5000
+
+        node_list1 = [
+            {"type": "node", "id": "n{}".format(i)} for i in range(node_count)
+        ]
+
+        edge_list1 = [
+            {
+                "type": "edge",
+                "source": "n{}".format(ns[0]),
+                "target": "n{}".format(ns[1]),
+            }
+            for ns in [random.sample(range(node_count), 2) for _ in range(edge_count)]
         ]
 
         self.el1 = Jelm(objects=[*node_list1, *edge_list1])

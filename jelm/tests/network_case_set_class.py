@@ -49,23 +49,7 @@ class NetworkCaseSet:
     def register(self, network_case: Type[NetwokCaseTemplate]):
 
         self.cases.append(network_case())
-
-    def evaluate_all(
-        self,
-        non_altering_function: Optional[Callable] = None,
-        altering_function: Optional[Callable] = None,
-        assert_alteration: Optional[Callable] = None,
-        catch_alteration_exception: Optional[Callable] = None,
-    ):
-
-        for case in self.cases:
-
-            case.evaluate_fun(
-                non_altering_function,
-                altering_function,
-                assert_alteration,
-                catch_alteration_exception,
-            )
+        return network_case
 
     def __iter__(self):
 

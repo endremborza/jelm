@@ -3,7 +3,7 @@ from copy import deepcopy
 from .edge_class import Edge
 from .node_class import Node
 
-from typing import Optional, Union
+from typing import Optional, Union, Dict
 
 
 class Jelm:
@@ -15,22 +15,24 @@ class Jelm:
     """
 
     def __init__(
-        self, metadata: Optional[dict] = None, objects: Optional[list] = None, **kwargs
+        self,
+        metadata: Optional[dict] = None,
+        objects: Optional[list] = None,
+        nodes: Optional[Dict[str, Node]] = None,
     ):
 
         self.metadata = metadata or {}
         self.objects = []
 
         self.nodes = {}
+        for n in (nodes or {}).values():
+            self.add_node_jelmobject(n)
+
+            for conns in n.target_neighbors.values():
+                self.objects += conns
+
         for o in objects or []:
             self.add_object(o)
-
-        if kwargs:
-            raise ValueError(
-                "Tried to create jelm object with additional kwargs {}".format(
-                    kwargs.keys()
-                )
-            )
 
     def dict(self) -> dict:
         return {
@@ -39,6 +41,7 @@ class Jelm:
         }
 
     from .io.output import json_dumps, json_dump
+    from .transformations.neighborhoods import get_neighborhood
 
     def add_object(self, obj: Union[dict, Edge, Node]):
 
@@ -114,7 +117,7 @@ class Jelm:
 
     def get_comparison_dict(self):
 
-        return {
+        node_comp_dic = {
             nid: {
                 "in": node.get_inward_comparison_neighbors(),
                 "out": node.get_outward_comparison_neighbors(),
@@ -122,6 +125,8 @@ class Jelm:
             }
             for nid, node in self.nodes.items()
         }
+
+        return {"metadata": self.metadata, "nodes": node_comp_dic}
 
     def copy(self):
         return self.__copy__()

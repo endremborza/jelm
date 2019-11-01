@@ -14,12 +14,23 @@ class Node:
     - can have arbitrary json serializable attributes
     """
 
-    def __init__(self, id: str, attributes: Optional[dict] = None):
+    def __init__(
+        self,
+        id: str,
+        attributes: Optional[dict] = None,
+        source_neighbors: Optional[dict] = None,
+        target_neighbors: Optional[dict] = None,
+    ):
         self.id = id
         self.attributes = attributes or {}
-        self.target_neighbors = {}
-        self.source_neighbors = {}
-        self.neighbors = {}
+        self.target_neighbors = target_neighbors or {}
+        self.source_neighbors = source_neighbors or {}
+        self.neighbors = {
+            n: self.target_neighbors.get(n, []) + self.source_neighbors.get(n, [])
+            for n in self.target_neighbors.keys() | self.source_neighbors.keys()
+        }
+
+    from .transformations.filters import restrict_to_neighborhood
 
     def get_dict(self) -> dict:
         if self.attributes:

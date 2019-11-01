@@ -127,11 +127,33 @@ def test_init():
 
     el = Jelm(metadata={"author": "John Doe"}, objects=[])
 
-    with pytest.raises(ValueError):
-        el2 = Jelm(bad_kwarg="fing")
-
     assert isinstance(el.objects, list)
     assert isinstance(el.metadata, dict)
+
+    el2 = Jelm(metadata={"author": "John Doe"}, nodes={})
+
+    assert el == el2
+
+    el3 = Jelm()
+
+    assert not (el == el3)
+
+    el4_1 = Jelm(nodes={"id1": Node(id="n1")})
+    el4_2 = Jelm(objects=[{"type": "node", "id": "n1"}])
+
+    assert el4_1 == el4_2
+
+
+def test_init_w_cases(jelm_pair_case: NetwokCaseTemplate):
+    def transform_init(el):
+
+        el_from_nodes = Jelm(metadata=el.metadata, nodes=el.nodes)
+
+        assert el_from_nodes == el
+
+        return el_from_nodes
+
+    jelm_pair_case.evaluate_fun(non_altering_function=transform_init)
 
 
 def test_add_object():

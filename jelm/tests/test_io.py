@@ -5,7 +5,7 @@ import pytest
 from jelm.core.jelm_class import Jelm
 from jelm.core.io.input import reads_json, read_json
 
-from .network_cases import case_set
+from jelm.tests.network_case_set_class import NetwokCaseTemplate
 
 
 def test_json_reads():
@@ -19,14 +19,14 @@ def test_json_reads():
     assert isinstance(el, Jelm)
 
 
-def test_json_reads_dumps_w_cases():
+def test_json_reads_dumps_w_cases(jelm_pair_case: NetwokCaseTemplate):
     def io_fun(_el: Jelm):
 
         _dump = _el.json_dumps()
 
         return reads_json(_dump)
 
-    case_set.evaluate_all(non_altering_function=io_fun)
+    jelm_pair_case.evaluate_fun(non_altering_function=io_fun)
 
 
 def test_json_read(tmp_path):
@@ -79,7 +79,7 @@ def test_json_dump(tmp_path):
         el.json_dump(10)
 
 
-def test_json_read_dump_w_cases(tmp_path):
+def test_json_read_dump_w_cases(tmp_path, jelm_pair_case: NetwokCaseTemplate):
     d = tmp_path / "sub3"
     d.mkdir()
     p = d / "fing3.jelm"
@@ -90,4 +90,4 @@ def test_json_read_dump_w_cases(tmp_path):
 
         return read_json(fp)
 
-    case_set.evaluate_all(non_altering_function=io_fun)
+    jelm_pair_case.evaluate_fun(non_altering_function=io_fun)
