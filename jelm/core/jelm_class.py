@@ -52,6 +52,8 @@ class Jelm:
                 raise TypeError("""either pass something with a .write() method, 
                 or a string pointing to a valid path to Jelm.json_dump""")
 
+    from .network_transformations import to_nothing
+
     def add_object(self, obj: Union[dict, Edge, Node]):
 
         if isinstance(obj, dict):
@@ -122,7 +124,8 @@ class Jelm:
     def get_comparison_dict(self):
 
         return {nid: {'in': node.get_inward_comparison_neighbors(),
-                      'out': node.get_outward_comparison_neighbors()
+                      'out': node.get_outward_comparison_neighbors(),
+                      'attributes': node.attributes
                       }
                 for nid, node in self.nodes.items()}
 
