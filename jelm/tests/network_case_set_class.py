@@ -9,11 +9,13 @@ class NetwokCaseTemplate:  # make this to a fixture
     el2 = Jelm()
     same = True
 
-    def evaluate_fun(self,
-                     non_altering_function: Optional[Callable] = None,
-                     altering_function: Optional[Callable] = None,
-                     assert_alteration: Optional[Callable] = None,
-                     catch_alteration_exception: Optional[Callable] = None):
+    def evaluate_fun(
+        self,
+        non_altering_function: Optional[Callable] = None,
+        altering_function: Optional[Callable] = None,
+        assert_alteration: Optional[Callable] = None,
+        catch_alteration_exception: Optional[Callable] = None,
+    ):
 
         el_in = self.el1.copy()
 
@@ -35,9 +37,11 @@ class NetwokCaseTemplate:  # make this to a fixture
             assert el_out == self.el1
             assert (el_out == self.el2) == self.same
 
+    def __repr__(self):
+        return "Network pair case: {}".format(type(self).__name__)  # pragma: no cover
+
 
 class NetworkCaseSet:
-
     def __init__(self):
 
         self.cases = []
@@ -46,18 +50,27 @@ class NetworkCaseSet:
 
         self.cases.append(network_case())
 
-    def evaluate_all(self,
-                     non_altering_function: Optional[Callable] = None,
-                     altering_function: Optional[Callable] = None,
-                     assert_alteration: Optional[Callable] = None,
-                     catch_alteration_exception: Optional[Callable] = None):
+    def evaluate_all(
+        self,
+        non_altering_function: Optional[Callable] = None,
+        altering_function: Optional[Callable] = None,
+        assert_alteration: Optional[Callable] = None,
+        catch_alteration_exception: Optional[Callable] = None,
+    ):
 
         for case in self.cases:
 
-            case.evaluate_fun(non_altering_function,
-                              altering_function,
-                              assert_alteration,
-                              catch_alteration_exception)
+            case.evaluate_fun(
+                non_altering_function,
+                altering_function,
+                assert_alteration,
+                catch_alteration_exception,
+            )
+
+    def __iter__(self):
+
+        for case in self.cases:
+            yield case
 
 
 case_set = NetworkCaseSet()

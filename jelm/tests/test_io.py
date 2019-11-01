@@ -3,17 +3,14 @@ import os
 import pytest
 
 from jelm.core.jelm_class import Jelm
-from jelm.core.io import reads_json, read_json
+from jelm.core.io.input import reads_json, read_json
 
 from .network_cases import case_set
 
 
 def test_json_reads():
 
-    test_dic = {
-        'metadata': {'author': 'me'},
-        'objects': []
-    }
+    test_dic = {"metadata": {"author": "me"}, "objects": []}
 
     dump = json.dumps(test_dic)
 
@@ -23,7 +20,6 @@ def test_json_reads():
 
 
 def test_json_reads_dumps_w_cases():
-
     def io_fun(_el: Jelm):
 
         _dump = _el.json_dumps()
@@ -38,10 +34,7 @@ def test_json_read(tmp_path):
     d.mkdir()
     p = d / "fing.jelm"
 
-    test_dic = {
-        'metadata': {'author': 'me'},
-        'objects': []
-    }
+    test_dic = {"metadata": {"author": "me"}, "objects": []}
 
     dump = json.dumps(test_dic)
 
@@ -60,11 +53,7 @@ def test_json_dump(tmp_path):
     p = d / "fing1.jelm"
     p2 = d / "fing2.jelm"
 
-    test_dic = {
-        'metadata': {'author': 'me'},
-        'objects': [{'type': 'node',
-                     'id': 'n1'}]
-    }
+    test_dic = {"metadata": {"author": "me"}, "objects": [{"type": "node", "id": "n1"}]}
 
     el = Jelm(**test_dic)
 
@@ -72,15 +61,13 @@ def test_json_dump(tmp_path):
 
     assert el.dict() == test_dic
 
-    assert isinstance(el.json_dumps(),
-                      str)
+    assert isinstance(el.json_dumps(), str)
 
     fp = os.fspath(p)
     fp2 = os.fspath(p2)
 
     el.json_dump(fp)
-    el.json_dump(open(fp2,
-                      'w'))
+    el.json_dump(open(fp2, "w"))
 
     el2 = read_json(fp)
     el3 = read_json(fp2)
