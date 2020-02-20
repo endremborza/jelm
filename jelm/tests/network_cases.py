@@ -208,10 +208,9 @@ class BigNetRef(NetwokCaseTemplate):
 
 @case_set.register
 class BiggerNetRef(NetwokCaseTemplate):
-    def __init__(self,
-                 node_count=200,
-                 edge_count=500):
+    def __init__(self, node_count=200, edge_count=500):
         import random
+
         random.seed(42)
 
         node_list1 = [

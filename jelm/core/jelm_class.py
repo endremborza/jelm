@@ -107,8 +107,7 @@ class Jelm:
     def add_node_jelmobject(self, node: Node, strip_edges: bool = True):
 
         if strip_edges:
-            _node = Node(id=node.id,
-                         attributes=node.attributes)
+            _node = Node(id=node.id, attributes=node.attributes)
         else:
             _node = node
 

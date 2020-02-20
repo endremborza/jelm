@@ -8,7 +8,7 @@ def pytest_addoption(parser):
 def pytest_generate_tests(metafunc):
     if "jelm_pair_case" in metafunc.fixturenames:
 
-        #if metafunc.config.getoption("big"):
+        # if metafunc.config.getoption("big"):
         #    from .network_cases import BiggerNetRef
 
         #    case_set.cases.append(BiggerNetRef(node_count=2000,
