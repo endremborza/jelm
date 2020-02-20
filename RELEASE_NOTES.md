@@ -1,2 +1,5 @@
-- testing refactored to a number of test cases
-- dictionary structure implemented for neighbor lookups
+- testing refactored to fixtures
+- ```__eq__``` bug fixed
+- restructured methods to different files
+- started black formatting
+- add neighborhood related transformations

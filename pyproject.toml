@@ -1,0 +1,17 @@
+[project]
+name = "jelm"
+description = "Network data package"
+authors = [
+    "Endre Márk Borza"
+]
+license = "MIT"
+readme = "README.md"
+python = ">=3.7"
+url = "https://github.com/endremborza/jelm"
+keywords="python graph description"
+[build-system]
+requires = [
+    "toml >= 0.10.0",
+    "setuptools >= 35.0.2",
+    "setuptools_scm >= 2.0.0, <3"
+]

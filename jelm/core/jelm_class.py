@@ -23,10 +23,10 @@ class Jelm:
 
         self.metadata = metadata or {}
         self.objects = []
-
+        self.edges = []
         self.nodes = {}
         for n in (nodes or {}).values():
-            self.add_node_jelmobject(n)
+            self.add_node_jelmobject(n, strip_edges=False)
 
             for conns in n.target_neighbors.values():
                 self.objects += conns
@@ -42,6 +42,7 @@ class Jelm:
 
     from .io.output import json_dumps, json_dump
     from .transformations.neighborhoods import get_neighborhood
+    from .transformations.filters import attribute_filter
 
     def add_object(self, obj: Union[dict, Edge, Node]):
 
@@ -101,15 +102,23 @@ class Jelm:
         self.get_node(edge.target).add_edge(edge)  # TODO: this might mess up loop-edges
 
         self.objects.append(edge)
+        self.edges.append(edge)
 
-    def add_node_jelmobject(self, node: Node):
+    def add_node_jelmobject(self, node: Node, strip_edges: bool = True):
+
+        if strip_edges:
+            _node = Node(id=node.id,
+                         attributes=node.attributes)
+        else:
+            _node = node
 
         if node.id not in self.nodes.keys():
-            self.nodes[node.id] = node
+            self.nodes[node.id] = _node
+
         else:
             raise ValueError("node with id {} already present".format(node.id))
 
-        self.objects.append(node)
+        self.objects.append(_node)
 
     def get_node(self, node_id: str) -> Node:
 
